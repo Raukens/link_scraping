@@ -1,21 +1,35 @@
-import main
+import requests
 
-import test
+from bs4 import BeautifulSoup
 
 
-def recursion(links_list, iteration=2):
-    space1 = '\t' * 1
+def extension(url):
+
+    links_list = []
+    soup = BeautifulSoup(requests.get(url).content, "html.parser")
+    for tags in soup.findAll("a"):
+        href = tags['href']
+        if href.startswith('/') and not href.startswith('//'):
+            href = url + href
+        if href.startswith(url):
+            links_list.append(href)
+    links_list = list(set(links_list))
+    return links_list
+
+
+def recursion(general_list, links_list, iteration):
+    space1 = '\t'
     space2 = '\t' * 2
     if iteration > 0:
         for link in links_list:
-            main.general_list.append(space1)
-            main.general_list.append(link)
-            sub_list = test.extension(link)
-            main.general_list.append(space2)
-            main.general_list.append(sub_list)
-        return recursion(links_list, iteration=iteration - 1)
+            general_list.append(space1)
+            general_list.append(link)
+            sub_list = extension(link)
+            general_list.append(space2)
+            general_list.append(sub_list)
+        return recursion(general_list, links_list, iteration=iteration - 1)
     else:
-        return main.general_list
+        return general_list
 
 
 
