@@ -2,6 +2,8 @@ import requests
 
 from bs4 import BeautifulSoup
 
+import sys
+
 
 def extension(url):
 
@@ -17,19 +19,17 @@ def extension(url):
     return links_list
 
 
-def recursion(general_list, links_list, iteration):
-    space1 = '\t'
-    space2 = '\t' * 2
+def recursion(links_list, iteration):
+    x = int(sys.argv[2]) - iteration
+    space = '\t' * (x - iteration)
     if iteration > 0:
         for link in links_list:
-            general_list.append(space1)
-            general_list.append(link)
             sub_list = extension(link)
-            general_list.append(space2)
-            general_list.append(sub_list)
-        return recursion(general_list, links_list, iteration=iteration - 1)
+            print(f"{space}{link}")
+            print(f"{space}{sub_list}")
+        return recursion(links_list, iteration=iteration - 1)
     else:
-        return general_list
+        return links_list
 
 
 
