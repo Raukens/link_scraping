@@ -1,12 +1,11 @@
 from recursion import extension
 from recursion import recursion
-from interface import get_user_data
+import check
 
 
 def main():
-    input_list = get_user_data()
-    site = input_list[0]
-    depth = input_list[1]
+    site = check.is_site_valid()
+    depth = check.is_depth_valid()
     links_list = extension(site)
     recursion(links_list, depth)
 
